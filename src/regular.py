@@ -3,7 +3,7 @@
 import pandas
 from scipy import stats
 
-# maps historical names of teams to their contemporary counterparts 
+# maps historical names of teams to their contemporary counterparts
 rename_mapping = {
     "Utah Hockey Club": "Utah Mammoth",
     "Mighty Ducks of Anaheim": "Anaheim Ducks",
@@ -16,10 +16,12 @@ start_year = 2005
 while start_year < 2026:
     df = pandas.read_html(f"./resources/{start_year}_{start_year + 1}.xls")[0]
 
-    # drop last row whit season averages that we are not interested in 
+    # drop last row whit season averages that we are not interested in
     df = df.iloc[:-1]
 
-    striped_name =  df.iloc[:, 1].astype(str).str.replace("*", "", regex=False).str.strip()
+    striped_name = (
+        df.iloc[:, 1].astype(str).str.replace("*", "", regex=False).str.strip()
+    )
 
     df.iloc[:, 1] = striped_name.replace(rename_mapping)
 
@@ -35,7 +37,7 @@ canadian_teams = [
     "Montreal Canadiens",
     "Vancouver Canucks",
     "Toronto Maple Leafs",
-    "Winnipeg Jets"
+    "Winnipeg Jets",
 ]
 
 american_teams = [
@@ -65,24 +67,85 @@ american_teams = [
     "St. Louis Blues",
     "Vegas Golden Knights",
     "Seattle Kraken",
-    "Utah Mammoth"
+    "Utah Mammoth",
 ]
 
-aggregated_df['Performance'] = aggregated_df.iloc[:, 7] / (aggregated_df.iloc[:, 3] / 50)
+traditional_teams = {
+    "Boston Bruins",
+    "Chicago Blackhawks",
+    "Detroit Red Wings",
+    "Montreal Canadiens",
+    "New York Rangers",
+    "Toronto Maple Leafs",
+    "Los Angeles Kings",
+    "Philadelphia Flyers",
+    "Pittsburgh Penguins",
+    "St. Louis Blues",
+}
+
+low_taxation_teams = {
+    "Carolina Hurricanes",
+    "Dallas Stars",
+    "Florida Panthers",
+    "Vegas Golden Knights",
+    "Nashville Predators",
+    "Seattle Kraken",
+    "Tampa Bay Lightning",
+    "Colorado Avalanche",
+    "Utah Mammoth",
+}
+
+medium_taxation_teams = {
+    "Boston Bruins",
+    "Chicago Blackhawks",
+    "Columbus Blue Jackets",
+    "Detroit Red Wings",
+    "Philadelphia Flyers",
+    "Pittsburgh Penguins",
+    "St. Louis Blues",
+    "Washington Capitals",
+    "New Jersey Devils",
+    "New York Islanders",
+    "Minnesota Wild",
+    "Buffalo Sabres",
+}
+
+high_taxation_teams = {
+    "Anaheim Ducks",
+    "Calgary Flames",
+    "Edmonton Oilers",
+    "Los Angeles Kings",
+    "Montreal Canadiens",
+    "New York Rangers",
+    "Ottawa Senators",
+    "San Jose Sharks",
+    "Toronto Maple Leafs",
+    "Vancouver Canucks",
+    "Winnipeg Jets",
+}
+
+
+aggregated_df["Performance"] = aggregated_df.iloc[:, 7] / (
+    aggregated_df.iloc[:, 3] / 50
+)
+
 
 def assign_origin(team_name):
     if team_name in canadian_teams:
-        return 'Canada'
+        return "Canada"
     elif team_name in american_teams:
-        return 'USA'
-    
-    print("warning: team with unknown nation of origin - input data are probably corrupted")
-    return 'Unknown'
+        return "USA"
 
-aggregated_df['Origin'] = aggregated_df.iloc[:, 1].apply(assign_origin)
+    print(
+        "warning: team with unknown nation of origin - input data are probably corrupted"
+    )
+    return "Unknown"
 
-us_performance = aggregated_df[aggregated_df['Origin'] == 'US']['Performance']
-ca_performance = aggregated_df[aggregated_df['Origin'] == 'CA']['Performance']
+
+aggregated_df["Origin"] = aggregated_df.iloc[:, 1].apply(assign_origin)
+
+us_performance = aggregated_df[aggregated_df["Origin"] == "US"]["Performance"]
+ca_performance = aggregated_df[aggregated_df["Origin"] == "CA"]["Performance"]
 
 
 t_statistic, p_value = stats.ttest_ind(us_performance, ca_performance, equal_var=False)
