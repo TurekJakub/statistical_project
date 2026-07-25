@@ -56,6 +56,7 @@ traditional_teams = {
     "Philadelphia Flyers",
     "Pittsburgh Penguins",
     "St. Louis Blues",
+    "Minnesota Wild",
 }
 
 low_taxation_teams = {
