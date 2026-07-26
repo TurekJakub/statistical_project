@@ -69,7 +69,7 @@ low_taxation_teams = {
     "Tampa Bay Lightning",
     "Colorado Avalanche",
     "Utah Mammoth",
-    "Arizona Coyotes"
+    "Arizona Coyotes",
 }
 
 medium_taxation_teams = {
@@ -85,7 +85,7 @@ medium_taxation_teams = {
     "New York Islanders",
     "Minnesota Wild",
     "Buffalo Sabres",
-    "Atlanta Thrashers"
+    "Atlanta Thrashers",
 }
 
 high_taxation_teams = {
@@ -109,6 +109,7 @@ rename_mapping = {
     "Phoenix Coyotes": "Arizona Coyotes",
 }
 
+
 def assign_origin(team_name):
     if not sanity_check_helper(team_name, "origin"):
         return "Unknown"
@@ -118,14 +119,16 @@ def assign_origin(team_name):
 
     return "USA"
 
+
 def assign_tradition(team_name):
     if not sanity_check_helper(team_name, "tradition"):
         return "Unknown"
-     
+
     if team_name in traditional_teams:
         return "Traditional"
 
     return "Expansion"
+
 
 def assign_taxation_level(team_name):
     if not sanity_check_helper(team_name, "taxation level"):
@@ -138,21 +141,26 @@ def assign_taxation_level(team_name):
     if team_name in high_taxation_teams:
         return "High"
 
+
 def sanity_check_helper(team_name: str, additional_err_message: str) -> bool:
     if team_name not in all_teams:
         print(
             f"warning: cannot assign {additional_err_message} to team: {team_name} - name does not match any team playing the league between 2005 and 2026"
         )
         return False
-    
+
     return True
+
 
 def assign_group_labels(data):
     data["Origin"] = data["Team"].apply(assign_origin)
     data["Tradition"] = data["Team"].apply(assign_tradition)
     data["Taxation"] = data["Team"].apply(assign_taxation_level)
 
-def group_data_by(data, group_by_col: str, group_values: list[str], col_to_select: str = None) -> tuple :
+
+def group_data_by(
+    data, group_by_col: str, group_values: list[str], col_to_select: str | None = None
+) -> tuple:
     groups: list = []
     for val in group_values:
         data_group = data[data[group_by_col] == val]

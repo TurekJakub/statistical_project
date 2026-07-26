@@ -1,7 +1,7 @@
-from scipy import stats
 from numpy import mean
+from scipy import stats
 
-from teams_division import group_data_by, assign_group_labels
+from teams_division import assign_group_labels, group_data_by
 
 
 def perform_permutation_test(data: tuple, test_name: str):
@@ -14,7 +14,7 @@ def perform_permutation_test(data: tuple, test_name: str):
         alternative="greater" if multiple_groups else "two-sided",
         random_state=42,
     )
-    
+
     report_test_results(test_name, results)
 
 

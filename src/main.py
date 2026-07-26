@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from regular import perform_regular_season_tests
 from playoffs import perform_playoff_tests
+from regular import perform_regular_season_tests
+
 
 def main():
     print("=== Test results ===", end="\n\n")
@@ -12,5 +13,6 @@ def main():
     print("\n=== Play off ===", end="\n\n")
 
     perform_playoff_tests()
+
 
 main()

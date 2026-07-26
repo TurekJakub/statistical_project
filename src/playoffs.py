@@ -2,9 +2,9 @@
 
 import pandas
 
-from utilities import perform_all_tests
-from teams_division import rename_mapping
 from regular import prepare_single_regular_season
+from teams_division import rename_mapping
+from utilities import perform_all_tests
 
 
 def prepare_playoff_dataset():
@@ -29,7 +29,7 @@ def prepare_playoff_dataset():
         season_teams = regular_df[["Team"]].copy()
 
         team_series = regular_df["Team"]
-       
+
         season_teams = pandas.DataFrame({"Team": team_series.values})
 
         all_teams_df = pandas.merge(
@@ -47,10 +47,12 @@ def prepare_playoff_dataset():
 
     return dataset
 
+
 def perform_playoff_tests():
     dataset = prepare_playoff_dataset()
 
     perform_all_tests(dataset, False)
+
 
 if __name__ == "__main__":
     perform_playoff_tests()
