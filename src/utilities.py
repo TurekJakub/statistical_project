@@ -1,7 +1,7 @@
 from numpy import mean
 from scipy import stats
 
-from teams_division import assign_group_labels, group_data_by
+from src.teams_division import assign_group_labels, group_data_by
 
 
 def perform_permutation_test(

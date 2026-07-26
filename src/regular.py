@@ -2,8 +2,8 @@
 
 import pandas
 
-from teams_division import rename_mapping
-from utilities import perform_all_tests
+from src.teams_division import rename_mapping
+from src.utilities import perform_all_tests
 
 
 def prepare_single_regular_season(start_year: int):

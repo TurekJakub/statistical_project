@@ -2,9 +2,9 @@
 
 import pandas
 
-from regular import prepare_single_regular_season
-from teams_division import rename_mapping
-from utilities import perform_all_tests
+from src.regular import prepare_single_regular_season
+from src.teams_division import rename_mapping
+from src.utilities import perform_all_tests
 
 
 def prepare_playoff_dataset():
