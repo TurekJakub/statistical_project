@@ -4,12 +4,26 @@ from scipy import stats
 from teams_division import assign_group_labels, group_data_by
 
 
-def perform_permutation_test(data: tuple, test_name: str):
+def perform_permutation_test(
+    data: tuple, test_name: str, use_rank_statistic: bool = True
+):
     multiple_groups = len(data) > 2
+
+    test_statistic = None
+    if multiple_groups:
+        if use_rank_statistic:
+            test_statistic = kruskal_statistic
+        else:
+            test_statistic = f_statistic
+    else:
+        if use_rank_statistic:
+            test_statistic = mann_whitney_u_statistic
+        else:
+            test_statistic = mean_diff_statistic
 
     results = stats.permutation_test(
         data,
-        f_statistic if multiple_groups else mean_diff_statistic,
+        test_statistic,
         permutation_type="independent",
         alternative="greater" if multiple_groups else "two-sided",
         random_state=42,
@@ -43,11 +57,21 @@ def perform_all_tests(dataset, is_regular_season: bool):
         grouped_by_tradition,
         f"{test_name_prefix} by tradition",
     )
-    perform_permutation_test(grouped_by_tax, f"{test_name_prefix} by taxation")
+    perform_permutation_test(
+        grouped_by_tax, f"{test_name_prefix} by taxation", not is_regular_season
+    )
 
 
 def f_statistic(*samples):
     return stats.f_oneway(*samples).statistic
+
+
+def mann_whitney_u_statistic(x, y):
+    return stats.mannwhitneyu(x, y).statistic
+
+
+def kruskal_statistic(*samples):
+    return stats.kruskal(*samples).statistic
 
 
 def mean_diff_statistic(x, y):
