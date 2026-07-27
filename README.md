@@ -1,6 +1,6 @@
 # Statistický projekt
 
-Tento projekt vznikl jako statistický projekt pro předmět Pravděpodobnost a statistika I na MFF UK v akademickém roce 2025/26. Projekt zkoumá vliv aspektů jako je země původu (Kanada x USA), hokejová tradice, či daňová zátěž na výsledky týmu hrajících NHL v sezonách 2005/2006 až 2025/2026. Více informací o práci a jejích výsledcích naleznete v [`reportu`](docs/report.md).
+Tento projekt vznikl jako statistický projekt pro předmět Pravděpodobnost a statistika I na MFF UK v akademickém roce 2025/26. Projekt zkoumá vliv aspektů jako je země původu (Kanada x USA), hokejová tradice, či daňová zátěž na výsledky týmu hrajících NHL v sezonách 2005/2006 až 2025/2026. Více informací o práci a jejích výsledcích naleznete v [`reportu`](docs/report.pdf).
 
 ## Spuštění
 
