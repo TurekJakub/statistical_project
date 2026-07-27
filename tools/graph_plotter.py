@@ -56,30 +56,42 @@ def plot_graphs(is_regular_season: bool, output_path: str):
 
     for idx, arg in enumerate(graph_args):
         ax[idx].set_xlabel(arg[2], fontsize=14)
-        ax[idx].set_ylabel("Úspěšnost", fontsize=14)
         ax[idx].set_title(f"Úspěšnost v {stage_label} dle {arg[4]}", fontsize=15)
 
-        sns.violinplot(
-            data=data,
-            x=arg[0],
-            y="Performance",
-            hue=arg[0],
-            ax=ax[idx],
-            palette=arg[1],
-            legend=False,
-            order=arg[3],
-        )
-        sns.stripplot(
-            data=data,
-            x=arg[0],
-            y="Performance",
-            color="black",
-            alpha=0.3,
-            jitter=0.2,
-            size=4,
-            ax=ax[idx],
-            order=arg[3],
-        )
+        if is_regular_season:
+            ax[idx].set_ylabel("Úspěšnost", fontsize=14)
+            sns.violinplot(
+                data=data,
+                x=arg[0],
+                y="Performance",
+                hue=arg[0],
+                ax=ax[idx],
+                palette=arg[1],
+                legend=False,
+                order=arg[3],
+            )
+            sns.stripplot(
+                data=data,
+                x=arg[0],
+                y="Performance",
+                color="black",
+                alpha=0.3,
+                jitter=0.2,
+                size=4,
+                ax=ax[idx],
+                order=arg[3],
+            )
+        else:
+            ax[idx].set_ylabel("Celkový počet startů v lize", fontsize=14)
+            sns.countplot(
+                data=data,
+                x=arg[0],
+                hue="Performance",
+                ax=ax[idx],
+                palette=arg[1],
+                order=arg[3],
+            )
+            ax[idx].legend(title="Vyhraných kol playoff", loc="upper left")
 
     plt.tight_layout()
     plt.savefig(output_path)
