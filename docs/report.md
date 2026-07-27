@@ -1,4 +1,9 @@
-# Vliv domovského státu na výsledky týmů NHL
+---
+geometry: "margin=2.5cm"
+lang: cs
+---
+
+# Vliv domovských státu na výsledky týmů NHL
 
 ## Úvod
 
@@ -8,7 +13,9 @@ Ještě než přejdeme k podrobnějšímu popisu dat a jejich zpracování, tak 
 
 Obecným postupem zkoumání vlivu daných aspektů na výkony týmu, bude tými rozdělit do dvou a více skupin dle daného kritéria, a následně se pomocí statistického testování hypotéz pokusit zamítnout nulovou hypotézu, že rozřazení týmů do skupin nemá vliv na jejich výsledky. Konkrétně za použití dvouvýběrového t-testu a pwermutačního testu. Konkrétní použití těchto testu a způsob vyjádření úspešnosti jednotlivých týmů bude popsáno v následujících kapitolách.
 
-První z kritérii, tedy rozdělení na americké a kanadské týmy, není třeba blíže specifikovat. Rozdělení týmů jednoznačně určuje stát v němž sídlí. Druhé kritérium, tedy hokejová tradice v dané oblasti, už není tak jednoznačné, proto definujme toto kritérium tak, že za tradiční budou považovány všechny týmy, které NHL hrály před jejím prvním velkým rozšířením v roce 1970. Tedy s výjimkou týmu Minnesota Wild, který bude považován za nástupce tradičního týmu Minnesota North Stars, přestože čistě formálně by jím měl být tým Dallas Stars, ale z hlediska hokejové tradice na něj navázal spíše právě tým Minnesota Wild. Posledním z kritérií je pak daňové zatížení klubů. Při rozdělení týmů dle tohoto kritéria byla využita data o průměrné daňové sazbě použité při danění ročních přijmů hráče v daném klubu (konkrétně průměrná daňová sazba při danění ročního přijmu 3 milionů dolarů v roce 2026, pozn.: roční příjem 3 miliony dolarů byl zvolen jako referenční hodnota na základě informací o mediánovém a pruměrném přijmu hráču NHL, průměr se pohybuje mezi 3 a 4 miliony, medián pak mezi 2 a 3 miliony). Kokrétně týmy pro jejichž hráče byla průměrná daňová sazba pod 40%, byly zařezeny do kategorie nízká daňová zátěž. Týmy s průměrnou daňovou sazbou mezi 40% a 46% z přijmu byly zařazeny do kategorie střední daňová zátěž. Ostatní týmy s průměrnou daňovou záteží vyšší než 46% pak byly zařezeny do kategorii vysoká daňová zátěž.
+První z kritérii, tedy rozdělení na americké a kanadské týmy, není třeba blíže specifikovat. Rozdělení týmů jednoznačně určuje stát v němž sídlí. Druhé kritérium, tedy hokejová tradice v dané oblasti, už není tak jednoznačné, proto definujme toto kritérium tak, že za tradiční budou považovány všechny týmy, které NHL hrály před jejím prvním velkým rozšířením v roce 1970. Tedy s výjimkou týmu Minnesota Wild, který bude považován za nástupce tradičního týmu Minnesota North Stars, přestože čistě formálně by jím měl být tým Dallas Stars, ale z hlediska hokejové tradice na něj navázal spíše právě tým Minnesota Wild[^1]. Posledním z kritérií je pak daňové zatížení klubů. Při rozdělení týmů dle tohoto kritéria byla využita data o průměrné daňové sazbě použité při danění ročních přijmů hráče v daném klubu (konkrétně průměrná daňová sazba při danění ročního přijmu 3 milionů dolarů v roce 2026, pozn.: roční příjem 3 miliony dolarů byl zvolen jako referenční hodnota na základě informací o mediánovém a pruměrném přijmu hráču NHL, průměr se pohybuje mezi 3 a 4 miliony, medián pak mezi 2 a 3 miliony). Kokrétně týmy pro jejichž hráče byla průměrná daňová sazba pod 40%, byly zařezeny do kategorie nízká daňová zátěž. Týmy s průměrnou daňovou sazbou mezi 40% a 46% z přijmu byly zařazeny do kategorie střední daňová zátěž. Ostatní týmy s průměrnou daňovou záteží vyšší než 46% pak byly zařezeny do kategorii vysoká daňová zátěž.
+
+[^1]: Problém s přesunem, nebo zánikem/vznikem týmu se v rámci sledovaného období vyskytuje několikrát, obecnou metodikou je v tomto případě, že pokud tým zůstal působit ve stejné oblasti a pouze změnil název/majitele, pak jsou oba týmy sloučeny pod nově vzniklý tým (napříkald Mighty Ducks of Anaheim a Anaheim Ducks jsou v rámci proce sloučeny jako Anaheim Duck). Pokud se však tým přesunul a začal působit ve zcela jiné oblasti, je rozdělen na dva nezávislé týmy (jeden po přesunu vznikl a druhý zanikl, například Atlanta Thrashers a Winnipeg Jets). Pokud tým vznikl/zanikl v průběhu sledovaného období bez předchůdce/pokračovatele je v práci zahrnut jako standardní tým, ale pouze po dobu své existence (například Seattle Kraken).
 
 ## Použitá data a jejich zpracování
 
@@ -19,6 +26,12 @@ Data o výsledcích základní a vyřazovací části mají podobu tabulky, kde 
 Zmíněná data o průměrné daňové zátěži pak pochází z [PuckPedia Tax Calculator](https://puckpedia.com/tax-calculator). Data použitá v rámci projektu lze opět nalézt v lokální kopii z července 2026 v `resources/tax_burden.html`. Obsahem souboru je HTML tabulka vygenerovaná PuckPedia Tax Calculator pro roční příjem 3 miliony dolarů, která je pro přehlednost pouze manuálně očištěna od nedatových elementů. Rozdělení týmů do skupin dle daňové zátěže na základě těchto dat je opět provedeno manuálně (manuální rozřazení týmů je rychlejší než automatizace celého procesu), viz. `src/teams_division.py`
 
 Jak již bylo zmíněno, na základě údajů o počtu získaných bodů a vyhraných zápasů je vypočítávána veličina kvantifikující úspěšnost jednotlivých týmu. V případě anylýzy základní části souteže je touto veličinou prostý procentuální podíl bodů získaných týmem v průběhu sezóny z celkově možných. V případě vyřazovací části soutěže je veličinou vyjadřující úspěšnost týmu počet vyhraných kol vyřazovací části (plus jeden bod této metriky pro každý tým, jenž do playoff postoupil, aby došlo k odlišení týmu, jenž byly vyřazeny v prvním kole a týmů, jenž vůbec nepostoupili, a eliminaci tohoto typu survivorship bias).
+
+Závěrem ještě přidejme vizualizaci výkonu týmu v jednotlivých částech soutěže při rozdělení dle zmíněných kriterií. V případě základní části graf ukazuje distribuci procentuálního počtu získaných bodů (tedy metriky úspešnosti pro základní část) a šedé body pak představují výsledky jednotlivých týmů v průběhu sezón. V případě vyřazovací části pak vizualizace znázorňuje četnost každého z možných počtu vyhraných kol ve vyřazovací části vzhledem k celkovému počtu startů týmu v lize během sezón (tj. každý tým je do celkového počtu započítán právě jednou za každou sezónu v níž nastoupil)
+
+![Výkon týmu v základní části při rozdělení dle jednotlivých aspektů](images/regular_season_plot.png)
+
+![Výkon týmu ve vyřazovací části při rozdělení dle jednotlivých aspektů](images/playoffs_plot.png)
 
 ## Použité statistické metody
 
@@ -38,4 +51,34 @@ Stejně jako v případě s f-statistikou narážejí i tyto bezparametrické va
 
 ## Výsledky experimentů
 
+### Základní část
+
+|Název experimentu  |Statistická metoda              |P-hodnota|Testová statistika|
+|-------------------|--------------------------------|---------|------------------|
+|Kanada x USA       |dvouvýběrový t-test             |  0.074  |       -1.79      |
+|Tradiční x Expanzní|dvouvýběrový t-test             |  0.026  |       2.239      |
+|Dle daňové zátěže  |permutační test s f-statistikou |  0.310  |       1.146      |
+
+Tabulka výše shrnuje výsledky jednotlivých experimentů s daty o výsledcích základní části NHL za sezóny 2005-2006 až 2025-2026. Z výsledku vyplývá, že nulovou hypotézu, že rozřezení do jednotlivých skupin neovlivňuje výsledky týmů, můžeme na hranici významnosti 5% zamítnout pouze v případě experimentu, v němž byly porovnávány výsledky tradičních a expanzních týmů. V tomto případě jsme dostasli výslednou p-hodnotu 0.026 a hodnotu testové statistiky 2.239. Pokud by tedy platila nulová hypotéza a to, zda je daný tým tradiční, či expanzní nemělo vliv na jeho výsledky, pak budeme pozorovat takové, nebo větší rozdíly ve výsledcích mezi týmy z daných skupin, s pravděpodobností 2,6%. Na základné kladné hodnoty testové statistiky pak můžeme říct, že první skupina, tedy tradiční týmy vzniklé před rokem 1970, dosahovaly v posledních 20 letech v průměru lepších výsledků v základní části soutěže, než nově vzniklé týmy.
+
+Výsledky provedených testů ve zbylých dvou případech nejsou statisticky významné na hranici 5% a nulovou hypotézu, že rozdělení týmu do skupin dle daňové zátěže, či země původu nemá vliv na jejich výsledky v základní části NHL, tedy v těchto případech nezamítneme. I když v případě porovnání kanadských a amerických bychom mohli říct, že se s výslednou p-hodnotou 0.074 pohybujeme mezi hladinami významnosti 5% a 10%, a tedy na hranici statisticky významného výsledku. A tedy bychom v takovém případě teoreticky mohli zamítnout nulovou hypotézu na hladině významnosti 10%, a na základě záporné hodnoty testové statistiky říci, že americké týmu v průměru dosahovaly v základní části lepších výsledků. Zůstaňme ale u standardní hladiny významnosti pro zamítnutí, tedy hladiny významnosti 5%.
+
+### Playoff
+
+|Název experimentu  |Statistická metoda                                 |P-hodnota|Testová statistika|
+|-------------------|---------------------------------------------------|---------|------------------|
+|Kanada x USA       |permutační test s Mann-Whitney U-statistikou       |  0.079  |   32216.000      |
+|Tradiční x Expanzní|permutační test s Mann-Whitney U-statistikou       |  0.027  |   52438.000      |
+|Dle daňové zátěže  |permutační test s Kruskal–Wallisovou H-statistikou |  0.601  |       1.001      |
+
+Tabulka výše opět shrnuje výsledky jednotlivých provedených experimentů, tentokrát však pro data o vyřazovací část soutěže. Stejně jako v případě základní části v předchozí podkapitole, opět dostáváme výsledky, na jejichž základě můžeme nulovou hypotézu na hladině významnosti 5% zamítnout pouze v případě rozdělení týmu na tradiční a expanzní. V případě experimentů porovnávajících tradiční a expenzní týmy je výsledná p-hodnota dokonce velmi podobná jak v případě základní, tak vyřazovací části soutěže.
+
+I výsledky zbylých dvou experimentů jsou velmi podobné jako v případě analýzy základní části. Kdy nulovou hypotézu, že rozdělení na americké a kanadské týmy nemá vliv na výkon jednotlivých týmu, bychom opět mohli zamítnout na hladině významnosti 10%, nikoliv však na standardní hladině 5% a pohybujeme se tak opět na hranici statisticky významného výsledku (výsledná p-hodnota je i v tomto případě velmi blízko výsledné p-hodnotě analogického testu pro data základní části). V případě rozdělení týmů dle daňové zátěže pak opět stejně jako při analýze základní části nulovou hypotézu nezamítneme. Tento experiment je také jediným, kde se výsledná p-hodnota významě liší (je téměř dvojnásobná) od hodnoty, kterou jsme dostali při analogické analýze dat základní části.
+
 ## Závěr
+
+Závěrem přejděme k shrnutí celé výše popsané analýzy vlivu aspektů sovisejích s domovským městem/oblastí na výsledky týmů NHL. V rámci projektu bylo zkoumáno, zda země původu (tedy Kanada, či USA), či hokejová tradice, nebo daňová zátěž v domovské oblasti týmu ovlivňuje jeho výsledky v rámci NHL. Analýza vlivu těchto aspektů byla provedena zvlášť pro základní a vyřazovací část soutěže na datech za posledních 20 sezón (tedy pro sezóny 2005-2006 až 2025-2026). Obecným rámcem pro zkoumání zdali má dané kritérium vliv na výkon jednotlivých týmu, byl vyslovit nulovou hypotézu, že rozdělení týmů do několika skupin dle daného kritéria nemá vliv na jejich výkon a následně se pomocí statistických testů pokusit tuto hypotézu zamítnout na hladině významnosti 5%.
+
+Na základě provedených testů jsme pak dostali statisticky významný výsledek pouze v případě analýzy vlivu hokejové tradice v dané oblasti, kdy jsme nulovou hypotézu, že rozdělení týmu na tradiční a expanzní nemá vliv na jejich výkon zamítli na hladině významnosti 5% a to, jak v případě analýzy základní, tak vyřazovací části soutěže. V případě zkoumání vlivu země původu se pak výsledky v případě obou částí soutěže pohybovaly na hranici statistické významnosti, kdy bylo možné nulovou hypotézu zamítnout na hladině významnosti 10%, ale nikoliv na hladině významnosti 5%. Pro vliv daňové zátěže pak nebyly statisticky významné výsledky testů ani pro jednu z částí soutěže. Výsledky testů pro jednotlivé aspekty jsou také značně konzistentní nápříč oběmi částmi ligy, kdy v případě testů zkomajících vliv země původu a hokejové tradice byl rozdíl mezi p-hodnotami v případě základní a vyřazovací části v řádu tisícin. Pouze v případě daňové zátěže byla výsledná p-hodnota v případě playoff části významě vyší, než tomu bylo v části základní.
+
+Na úplný závěr ještě uveďme hlavní problémy práce na něž je při interpretaci třeba brát zřetel. Jak již bylo zmíněno výše, asi hlavním problémem, který může ovlivnit výsledky jednotlivých experimentů, že v rámci projektu jsou výsledky týmu v jednotlivých sezónách považovány za nezávislé, což není zcela v souladu s reálnou praxí, kdy se týmy po skončení sezóny od základu nezmění, ale zachovají si minimálně část svých silných/slabých stránek. Dalším nedostatkem pak může být, že například daňové zatížení jednotlivých týmů se v čase neustále vyvýjí, což v rámci projektu není nijak modelováno a týmy jsou staticky rozřazeny dle stavu v době vzniku práce, tedy létě roku 2026.
