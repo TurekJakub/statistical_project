@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from playoffs import perform_playoff_tests
-from regular import perform_regular_season_tests
+from src.playoffs import perform_playoff_tests
+from src.regular import perform_regular_season_tests
 
 
 def main():
