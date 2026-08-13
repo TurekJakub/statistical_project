@@ -23,7 +23,7 @@ python3 -m src.main
 
 ```
 
-V adresáři [`tools`](tools/) zároveň naleznete několik pomocních skriptů pro stažení aktuálních dat, jenž experimenty využívají, nebo jejich vizualizaci.
+V adresáři [`tools`](tools/) zároveň naleznete několik pomocných skriptů pro stažení aktuálních dat, jenž experimenty využívají, nebo jejich vizualizaci.
 
 ## Zdrojová data
 
